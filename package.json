@@ -1,0 +1,29 @@
+{
+    "name": "chalk-flags",
+    "version": "1.0.0",
+    "description": "Easily declare chalk color styles inside the text itself.",
+    "main": "index.js",
+    "type": "module",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/rainwashed/chalk-flags.git"
+    },
+    "keywords": [
+        "chalk",
+        "colors",
+        "color",
+        "colour",
+        "terminal",
+        "console",
+        "string",
+        "ansi",
+        "style",
+        "styles"
+    ],
+    "author": "RainWashed",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/rainwashed/chalk-flags/issues"
+    },
+    "homepage": "https://github.com/rainwashed/chalk-flags#readme"
+}
