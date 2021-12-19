@@ -44,6 +44,12 @@ class ChalkFlag {
 
     // -------------- INTERNAL -------------- //
 
+    // Reset lexer tracking system
+    _resetLx() {
+        this._lx = {};
+        return (this._lx == {});
+    }
+
     // Test if flag exists within the Identifier to Function
     _test(f) {
         return typeof(this.itf[f]) == 'function';
@@ -81,7 +87,7 @@ class ChalkFlag {
 
             this._lx.push({
                 type: this.itf[y],
-                content: word.toString().substring(possibleOp[x], word.toString().length),
+                content: word.toString().substring(possibleOp[x].toString().length, word.toString().length),
             });
         }
     }
@@ -89,16 +95,33 @@ class ChalkFlag {
     // Main Function
     _main(s) {
         this._lexer(s);
+        const cs = [];
+
+        for (const y of this._lx) {
+            if (this.vl) console.log(y, typeof(y), typeof(y['type']));
+
+            if (typeof(y['type']) == 'function') {
+                cs.push(y['type'](y['content']));
+            } else {
+                cs.push(y['content']);   
+            }
+        }
+
+        if (this._resetLx())
+
+        return cs.join(' '); // TODO: Might need to fix this to account for new lines, etc.
     }
 
     // --------------- EXTERNAL --------------- //
 
-    internalParse() {
-        console.log(this);
-    }
+    // TODO: Extending prototype actually work LOL
+    // internalParse() {
+    //     console.log(this);
+    //     return this._main(this);
+    // }
 
     parse(string) {
-        this._main(string);
+        return this._main(string);
     }
 }
 
@@ -107,9 +130,9 @@ class ChalkFlag {
 const cf = new ChalkFlag({
     extendStringPrototype: true,
     customSplitRule: ' ',
-    logging: true,
+    logging: false,
 });
 
-cf.parse('i/Hello World')
+console.log(cf.parse('i/Hello g/World'));
 
-console.log(cf._lx);
+console.log('r/Goodbye World!'.chalkParse());
