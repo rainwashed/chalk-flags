@@ -66,18 +66,37 @@ class ChalkFlag {
             const t1 = s2.toString().split(/a/)
         }; // Check the amount of flags in a given word. This can be used by the lexer to further process the word. */
 
-        if (this.vl) console.log(splitString);
+        if (this.vl) console.log('splitString:', splitString);
+
+        const p = this; // For the functions to access a higher level scope
+
+        function returnFlagCount(w) {
+            const wSplit = w.toString().split('/');
+            const c = wSplit.length - 1; // Count of slashes
+            let f = 0; // Final count (some slashes may not be to actual flags)
+
+            if (p.vl) console.log(w, wSplit, c);
+            for (const possibleF of wSplit) {
+                if (p.vl) console.log('possibleF:', possibleF);     
+                if (p._test(`${possibleF.toString().toLowerCase()}/`)) f++;           
+            }
+
+            if (p.vl) console.log('final count:', f);
+            return f;
+        }
 
         for (let word of splitString) {
             const possibleOp = [];
             let x, y;
+
+            returnFlagCount(word);
 
             splitOp.forEach((maxSize) => possibleOp.push(word.toString().substring(0, maxSize)));
             possibleOp.forEach((e, i) => {
                 if (this._test(e)) return eval('x = i; y = e;');
             });
 
-            if (this.vl) console.log(possibleOp, word, x);
+            if (this.vl) console.log('possibleOp / word / x:', possibleOp, word, x);
 
             // No flags exist
             if (x == undefined) return this._lx.push({
@@ -97,6 +116,7 @@ class ChalkFlag {
         this._lexer(s);
         const cs = [];
 
+        // TODO: One flag system needs to change to an adapting one
         for (const y of this._lx) {
             if (this.vl) console.log(y, typeof(y), typeof(y['type']));
 
@@ -130,9 +150,7 @@ class ChalkFlag {
 const cf = new ChalkFlag({
     extendStringPrototype: true,
     customSplitRule: ' ',
-    logging: false,
+    logging: true,
 });
 
-console.log(cf.parse('i/Hello g/World'));
-
-console.log('r/Goodbye World!'.chalkParse());
+cf.parse('i/Hello g/bd/World');
