@@ -81,9 +81,8 @@ class ChalkFlag {
 
         for (let word of splitString) {
             const possibleOp = [];
-            let x, y;
-
-            returnFlagCount(word);
+            let x, y; // X: Index of correct possible opportunity / Y: Correct possible opportunity word/flag
+            let fc = returnFlagCount(word) // Flag Count
 
             splitOp.forEach((maxSize) => possibleOp.push(word.toString().substring(0, maxSize)));
             possibleOp.forEach((e, i) => {
