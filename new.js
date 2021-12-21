@@ -60,12 +60,6 @@ class ChalkFlag {
         const splitString = s.toString().split(this.csr);
         const splitOp = [ 2, 3, 4 ]; // Max size of all flag opportunities
 
-        /* const returnFlagCount = (s2) => {
-            // TODO: Develop a testing algorithm to detect the amount of flags there are in a system
-            // Also implement a system in which words can be commented out
-            const t1 = s2.toString().split(/a/)
-        }; // Check the amount of flags in a given word. This can be used by the lexer to further process the word. */
-
         if (this.vl) console.log('splitString:', splitString);
 
         const p = this; // For the functions to access a higher level scope
@@ -93,7 +87,10 @@ class ChalkFlag {
 
             splitOp.forEach((maxSize) => possibleOp.push(word.toString().substring(0, maxSize)));
             possibleOp.forEach((e, i) => {
-                if (this._test(e)) return eval('x = i; y = e;');
+                if (this._test(e)) {
+                    x = i;
+                    y = e;
+                }
             });
 
             if (this.vl) console.log('possibleOp / word / x:', possibleOp, word, x);
@@ -127,7 +124,7 @@ class ChalkFlag {
             }
         }
 
-        if (this._resetLx())
+        if (this._resetLx() && this.vl) console.log('cleared lexer tracking system');
 
         return cs.join(' '); // TODO: Might need to fix this to account for new lines, etc.
     }
