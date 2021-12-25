@@ -77,7 +77,7 @@ All basic styles in *chalk.js* are covered.
 
 ## Features / ToDo
 
-- [-] Flag chaining (more than one flag per word)
+- [x] Flag chaining (more than one flag per word)
 - [ ] Flag covering (more than one word per flag)
 
 ---
