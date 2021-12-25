@@ -1,6 +1,6 @@
 {
     "name": "chalk-flags",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Easily declare chalk color styles inside the text itself.",
     "main": "index.js",
     "type": "module",

@@ -1,5 +1,6 @@
 <h1 align="center">Chalk Flags</h1>
 <h3 align="center">Easily declare <a href='https://www.npmjs.com/package/chalk'>chalk.js</a> color styles inside the text itself.</h1>
+<p align="center">Version 1.0.1</p>
 
 ---
 
@@ -14,45 +15,30 @@ There are two methods to use **chalk-flags**.
 
 > git clone https://github.com/rainwashed/chalk-flags.git
 
-\* import the ``index.js`` file
+\* import the ``index.js`` file for version 1.0.1 or ``old.js`` for version 1.0.0
 
 ---
 
 ## Usage
 
 ```js
-import chalkFlags from 'chalk-flags';
+import cf from 'chalk-flags';
 
-console.log(chalkFlags('bd/Hello r/World')); // Returns a formatted string
+const e = new cf(); // Chalk flag engine (multiple can be created with different settings)
+
+console.log(e.parse('r/bd/Hello u/i/World'));
 ```
-Output: \
-![_](assets/demo_img1.png)
+
+![](./assets/demo.png)
 
 ---
 
-## Examples
-
-### Welcome Statement
-![_](assets/demo_welcome.png)
-
-Code:
 ```js
-console.log(parse('bd/Hello bd/and bd/welcome! b/We b/are b/glad b/you b/joined b/us. i/Do i/not i/share i/any i/info i/this i/point i/forward.'));
+// TODO: Fix broken documentation
 ```
-
-### Logger
-![_](assets/demo_logs.png)
-
-Code:
-```js
-console.log(parse('Current Time: i/10:04PM \nMemory Usage: bd/2gb/10gb \nUnix Name: b/Rain'));
-```
-
----
-
 ## Documentation
 
-Each word in a document can have **one** flag that will modify its colors/attributes.
+Each word in a document can have **multiple** (introduced in version 1.0.1) flag that will modify its colors/attributes.
 The format is as follows \
 ``[flag]/word``
 
@@ -91,8 +77,8 @@ All basic styles in *chalk.js* are covered.
 
 ## Features / ToDo
 
-- Flag chaining (more than one flag per word)
-- Flag covering (more than one word per flag)
+- [ x ] Flag chaining (more than one flag per word)
+- [ ] Flag covering (more than one word per flag)
 
 ---
 
