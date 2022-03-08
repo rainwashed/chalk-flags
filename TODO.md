@@ -1,0 +1,2 @@
+- [ ] Setup Docker Container
+- [ ] Figure out the syntax
