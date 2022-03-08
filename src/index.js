@@ -44,6 +44,8 @@ r_bt+ii+rBg/Hello World/end
 bright red text color + italic text + red background 
 */
 
+// https://regex101.com/r/5ru6yN/1 - Regex with 4 test case scenarios 
+
 const _internalFunctions = {
     lastElem: (array) => {
         return array.slice(-1)[0];
@@ -61,14 +63,33 @@ class ChalkFlag {
         this._lexerTrackingSystem = {};
     }
 
+    // Custom console log just to handle if verbose logging is on
+    _consoleLog(string, ...args) {
+        if (this.verboseLogging) console.log(string, ...args);
+    }
+
     // [rgb, Hello, World, end]
 
     _lexer(phrase) {       
         const sectionsOfText = phrase.toString().split(this.syntaxRules.flagSplit);
         if (_internalFunctions.lastElem(sectionsOfText) !== this.syntaxRules.flagEnd) return; // If the end block does not match the syntaxRules.flagEnd, this is not a valid ChalkFlag string and so do nothing.
-        
-        const flags = sectionsOfText[0].split("+"); // The flag rules of the text
-        const targetTextLength = sectionsOfText.length - 2; // The last element of the array (should) always be the end block and the first element of the array (should) always be the flag block
+        const textFlags = sectionsOfText[0].split("+"); // The flag rules of the text
+        const textBlockLength = sectionsOfText.length - 2; // The last element of the array (should) always be the end block and the first element of the array (should) always be the flag block
+        const trueText = (textBlockLength < 2) ? sectionsOfText[1] : sectionsOfText.slice(1, textBlockLength); // Handle cases in which the text have slashes inside of them (still need to test)
+
+        this._consoleLog("Flags:", textFlags);
+        this._consoleLog("Text Block Length:", textBlockLength);
+        this._consoleLog("True Text:", trueText);
+
+        // Create meaning from each flag
+        /*
+            trueFlags structure as followed:
+            [trueColor]: {
+                bright: [true/false],
+                background: [true/false]
+            }
+        */
+        const trueFlags = [];
     }
 
     parse(string) {
@@ -76,9 +97,9 @@ class ChalkFlag {
     }
 }
 
-const test = new ChalkFlag();
+const test = new ChalkFlag(true);
 
 test.parse("r_bt+ii+rBg/Hello World/end");
-test.parse("This line has nothing to do with ChalkFlags");
-test.parse("red+green+blue/is awesome/end");
-test.parse("red+green+blue/is not awesome/end")
+// test.parse("This line has nothing to do with ChalkFlags");
+// test.parse("red+green+blue/is awesome/end");
+// test.parse("red+green+blue/is not awesome/end")
