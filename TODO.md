@@ -1,2 +1,3 @@
 - [ ] Setup Docker Container
-- [ ] Figure out the syntax
+- [x] Figure out the syntax
+- [ ] Create a strict-set
