@@ -56,6 +56,8 @@ const _validModifiers = {
     "bg": "background" // <-- be handled differently due to their nature
 };
 
+const stringCapitalize = (s) => s[0].toUpperCase() + s.slice(1);
+
 class ChalkFlag {
     // TODO: Modify customSplitRule to account for the new syntax rule (flags/Main Text Content Here/end)
     constructor(verboseLogging=false, customSplitRule=" ", syntaxRules={ flagSplit: "/", flagEnd: "end" }) {
@@ -90,11 +92,6 @@ class ChalkFlag {
         const textBlockLength = sectionsOfText.length;
         const trueText = (textBlockLength < 2) ? sectionsOfText[1] : sectionsOfText.slice(1, textBlockLength); // Handle cases in which the text have slashes inside of them (still need to test)
 
-        // this._consoleLog("Possible Flags:", textFlags);
-        // this._consoleLog("Text Block Length:", textBlockLength);
-        // this._consoleLog("True Text:", trueText);
-        // this._consoleLog("___FINISH LEXER INITIAL___")
-
         const finalData = [];
 
         for (let flag of textFlags) {
@@ -126,8 +123,6 @@ class ChalkFlag {
         finalData.push((Array.isArray(trueText)) ? trueText.join(this.syntaxRules.flagSplit) : trueText.toString()); // last element of the finalData array will always be the text string
 
         this._lexerTrackingSystem.push(finalData);
-        // this._consoleLog(`-----FOR STRING ${trueText}-----`);
-        // this._consoleLog(finalData);
    }
 
     parse(string) {
@@ -138,7 +133,20 @@ class ChalkFlag {
             this._lexer(phrase);
         }
 
-        console.log(this._lexerTrackingSystem);
+        for (const lexer of this._lexerTrackingSystem) {
+            let text = lexer.pop();
+            lexer.forEach((style) => {
+                let chalkStyle = style["modifier"];
+                if (style.bright) chalkStyle = chalkStyle + "Bright";
+                if (style.background) chalkStyle = "bg" + stringCapitalize(chalkStyle);
+
+                text = chalk[chalkStyle](text);
+            });
+
+            console.log(text);
+        }
+        
+        // console.log(this._lexerTrackingSystem);
         this._resetLexer();
         
     }
@@ -147,6 +155,7 @@ class ChalkFlag {
 const test = new ChalkFlag(true);
 
 // test.parse("r_bt+ii+rBg+ax+gr/Hello World/end b_bt+bb+rBg+ax/Goodbye / World/end");
+test.parse("r_bt+bb/Hello World/end")
 // test.parse("This line has nothing to do with ChalkFlags");
-test.parse("red+green+blue/is awesome/end");
-test.parse("red+green+blue/is not awesome/end")
+// test.parse("red+green+blue/is awesome/end");
+// test.parse("red+green+blue/is not awesome/end")
