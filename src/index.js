@@ -55,21 +55,6 @@ const _validModifiers = {
     "bt": "bright", // <----- Only these two need to 
     "bg": "background" // <-- be handled differently due to their nature
 };
-// bt is for the Bright which can be both for colors and modifiers
-
-/*
-example of the syntax:
-r_bt+ii+rBg/Hello World/end
-bright red text color + italic text + red background 
-*/
-
-// https://regex101.com/r/5ru6yN/1 - Regex with 4 test case scenarios 
-
-const _internalFunctions = {
-    lastElem: (array) => {
-        return array.slice(-1)[0];
-    }
-};
 
 class ChalkFlag {
     // TODO: Modify customSplitRule to account for the new syntax rule (flags/Main Text Content Here/end)
@@ -79,7 +64,12 @@ class ChalkFlag {
         this.syntaxRules = syntaxRules;
 
         // Lexer tracking system to track every flag and word that occurs within the string
-        this._lexerTrackingSystem = {};
+        this._lexerTrackingSystem = [];
+    }
+
+    // Reset lexer system
+    _resetLexer() {
+        this._lexerTrackingSystem = [];
     }
 
     // Custom console log just to handle if verbose logging is on
@@ -95,53 +85,68 @@ class ChalkFlag {
 
     _lexer(phrase) {       
         const sectionsOfText = phrase.toString().split(this.syntaxRules.flagSplit);
-        if (_internalFunctions.lastElem(sectionsOfText) !== this.syntaxRules.flagEnd) return; // If the end block does not match the syntaxRules.flagEnd, this is not a valid ChalkFlag string and so do nothing.
+        // if (_internalFunctions.lastElem(sectionsOfText) !== this.syntaxRules.flagEnd) return; // It does not matter if the last element of the array is the syntaxRules.flagEnd since it is already used in the parse() function as the string splitter
         const textFlags = sectionsOfText[0].split("+"); // The flag rules of the text
-        const textBlockLength = sectionsOfText.length - 2; // The last element of the array (should) always be the end block and the first element of the array (should) always be the flag block
+        const textBlockLength = sectionsOfText.length;
         const trueText = (textBlockLength < 2) ? sectionsOfText[1] : sectionsOfText.slice(1, textBlockLength); // Handle cases in which the text have slashes inside of them (still need to test)
 
-        this._consoleLog("Possible Flags:", textFlags);
-        this._consoleLog("Text Block Length:", textBlockLength);
-        this._consoleLog("True Text:", trueText);
-        this._consoleLog("___FINISH LEXER INITIAL___")
+        // this._consoleLog("Possible Flags:", textFlags);
+        // this._consoleLog("Text Block Length:", textBlockLength);
+        // this._consoleLog("True Text:", trueText);
+        // this._consoleLog("___FINISH LEXER INITIAL___")
 
-        // Create meaning from each flag
-        /*
-            finalData structure as followed:
-            [trueColor]: {
-                bright: [true/false],
-                background: [true/false],
-                type: [color/modifier]
-            },
-            "text": trueText
-        */
-        const finalData = {}
+        const finalData = [];
 
-        for (const flag of textFlags) {
-            if (flag.includes("_") || flag.includes("Bg")) continue; // handle sep.
-            const flagTest = this._testSimpleFlag(flag);
+        for (let flag of textFlags) {
+            flag = flag.trim();
+
+            let bright = false;
+            let background = false;
+
+            if (flag.endsWith("_bt")) {
+                bright = true;
+                flag = flag.toString().slice(0, -3);
+            } else if (flag.endsWith("Bg")) {
+                background = true;
+                flag = flag.toString().slice(0, -2);
+            }
+
+            const flagTest = this._testSimpleFlag(flag);  
+            
             if (!flagTest) continue;
 
-            finalData[flagTest[1]] = {
-                bright: false,
-                background: false,
+            finalData.push({
+                modifier: flagTest[1],
+                bright,
+                background,
                 type: flagTest[0],
-            };
+            });
         }
 
-        finalData["text"] = (Array.isArray(trueText)) ? trueText.join(this.syntaxRules.flagSplit) : trueText.toString();
+        finalData.push((Array.isArray(trueText)) ? trueText.join(this.syntaxRules.flagSplit) : trueText.toString()); // last element of the finalData array will always be the text string
 
-        console.log(finalData);
-    }
+        this._lexerTrackingSystem.push(finalData);
+        // this._consoleLog(`-----FOR STRING ${trueText}-----`);
+        // this._consoleLog(finalData);
+   }
 
     parse(string) {
-        this._lexer(string);
+        const phrases = string.split(`${this.syntaxRules.flagSplit}${this.syntaxRules.flagEnd}`);
+        phrases.pop();
+        
+        for (const phrase of phrases) {
+            this._lexer(phrase);
+        }
+
+        console.log(this._lexerTrackingSystem);
+        this._resetLexer();
+        
     }
 }
 
 const test = new ChalkFlag(true);
 
-test.parse("r_bt+ii+rBg+ax/Hello World/end");
+// test.parse("r_bt+ii+rBg+ax+gr/Hello World/end b_bt+bb+rBg+ax/Goodbye / World/end");
 // test.parse("This line has nothing to do with ChalkFlags");
-// test.parse("red+green+blue/is awesome/end");
-// test.parse("red+green+blue/is not awesome/end")
+test.parse("red+green+blue/is awesome/end");
+test.parse("red+green+blue/is not awesome/end")

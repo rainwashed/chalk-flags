@@ -1,3 +1,0 @@
-- [ ] Setup Docker Container
-- [x] Figure out the syntax
-- [ ] Create a strict-set
