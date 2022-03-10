@@ -1,38 +1,38 @@
 import chalk from "chalk"
 
 // TODO: Remove this later, this is just for notes
-const _chalkGlueLayer = {
-    backgroundColors: {
-        "r": chalk.bgRed,
-        "g": chalk.bgGreen,
-        "y": chalk.bgYellow,
-        "b": chalk.bgBlue,
-        "m": chalk.bgMagenta,
-        "c": chalk.bgCyan,
-        "w": chalk.bgWhite,
-        "bk": chalk.bgBlack,
-        "gr": chalk.bgGray,
-    },
-    textColors: {
-        "r": chalk.red,
-        "g": chalk.green,
-        "y": chalk.yellow,
-        "b": chalk.blue,
-        "m": chalk.magenta,
-        "c": chalk.cyan,
-        "w": chalk.white,
-        "bk": chalk.black,
-        "gr": chalk.gray,
-    },
-    validModifiers: {
-        "ii": chalk.italic,
-        "bb": chalk.bold,
-        "dd": chalk.dim,
-        "un": chalk.underline,
-        "in": chalk.inverse,
-        "st": chalk.strikethrough,
-    }
-};
+// const _chalkGlueLayer = {
+//     backgroundColors: {
+//         "r": chalk.bgRed,
+//         "g": chalk.bgGreen,
+//         "y": chalk.bgYellow,
+//         "b": chalk.bgBlue,
+//         "m": chalk.bgMagenta,
+//         "c": chalk.bgCyan,
+//         "w": chalk.bgWhite,
+//         "bk": chalk.bgBlack,
+//         "gr": chalk.bgGray,
+//     },
+//     textColors: {
+//         "r": chalk.red,
+//         "g": chalk.green,
+//         "y": chalk.yellow,
+//         "b": chalk.blue,
+//         "m": chalk.magenta,
+//         "c": chalk.cyan,
+//         "w": chalk.white,
+//         "bk": chalk.black,
+//         "gr": chalk.gray,
+//     },
+//     validModifiers: {
+//         "ii": chalk.italic,
+//         "bb": chalk.bold,
+//         "dd": chalk.dim,
+//         "un": chalk.underline,
+//         "in": chalk.inverse,
+//         "st": chalk.strikethrough,
+//     }
+// };
 
 const _validColors = {
     "r": "red",
@@ -126,6 +126,7 @@ class ChalkFlag {
    }
 
     parse(string) {
+        const formattedString = [];
         const phrases = string.split(`${this.syntaxRules.flagSplit}${this.syntaxRules.flagEnd}`);
         phrases.pop();
         
@@ -143,19 +144,12 @@ class ChalkFlag {
                 text = chalk[chalkStyle](text);
             });
 
-            console.log(text);
+            formattedString.push(text);
         }
         
-        // console.log(this._lexerTrackingSystem);
         this._resetLexer();
-        
+        return formattedString.join(" ");
     }
 }
 
-const test = new ChalkFlag(true);
-
-// test.parse("r_bt+ii+rBg+ax+gr/Hello World/end b_bt+bb+rBg+ax/Goodbye / World/end");
-test.parse("r_bt+bb/Hello World/end")
-// test.parse("This line has nothing to do with ChalkFlags");
-// test.parse("red+green+blue/is awesome/end");
-// test.parse("red+green+blue/is not awesome/end")
+export default ChalkFlag;

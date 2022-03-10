@@ -73,8 +73,53 @@ r+bb/Hello World/end
 ```
 ![](assets/docs/red_bold_Hello_World.png)
 
+For modifiers such as **bt** and **bg**, they are appended to other flags rather than standing on their own. **bt** will brighten whatever color it is attached to (ex: Light Cyan = c_bt). **bt** will always require an _ to attach itself to a flag, so if the Light Cyan flag was written as cbt, it would not work. 
+
+**bg** also attaches to another flag, but it makes the color the background color instead. **bg** requires that the B in the bg be capitalized during the flag statement (ex: Cyan Background = cBg). **bg** should always follow the color flag, not come before it.
+
 ## Documentation
+``chalk-flags`` exports one class which is the ``ChalkFlag`` class, but since it is the default export, the name can be whatever during import. The ``ChalkFlag`` class must be initialized for the project to run as each ``ChalkFlag`` class can contain its own settings and syntax, making chalk-flags very versatile.
+
+### constructor(verboseLogging=false, customSplitRule=" ", syntaxRules={ flagSplit: "/", flagEnd: "end" })
+This will initialize ChalkFlag for usage with the ``parse`` function. \
+*verboseLogging* must be a **boolean** type. \
+*customSplitRule* must be a **string** type. \
+*syntaxRules* must be an **object** type with the *flagSplit* and *flagEnd* must be **strings**.
+
+- > verboseLogging determines if ChalkFlag should do verbose logging such as the lexer system, what it is processing, etc.
+- > customSplitRule (kinda redundant) determines how two different flag declarations should be handled. (Ex: r+ii/Hello World/end b+ii/Goodbye World/end)
+- > syntaxRules (kinda redundant) determines how the flag declaration syntax should be handled. The *flagSplit* properties tells where the flags and the main text content should split and the *flagEnd* property tells where the end of the flag chunk is
+
+#### **returns** a ChalkFlag object/class
+
+### parse(string)
+The parse function takes in the input *string* that is the type of **string** and is the chalk declaration meaning the flags + text + flag ending. 
+
+#### **returns** a properly, color-formatted string to be *console.log*
+
+#### **Example**
+```js
+import ChalkFlag from "chalk-flags"
+
+const cf = new ChalkFlag();
+const formattedString = cf.parse("r/Hello World/end");
+
+console.log(formattedString);
+
+// Console log red colored "Hello World"
+```
 
 ## Caveats
-- \* a
-- \*\* b
+- \* The syntax is still quite limiting and I hope to expand the syntax to enable custom colors/hexadecimal codes.
+- \*\* The performance I have still not measured to other packages, but from all the testing I've done, it seems to run quite fast.
+
+## Contributors
+```js
+// No one has contributed yet
+```
+
+## Contribution Process
+Anyone is welcome and free to contribute to the project. Just clone the repository, create a separate branch (use your username as the branch name), make your changes, and send a pull request
+
+## License
+This project is under the **MIT** license (same as chalk) and more information can be found in the [LICENSE](./LICENSE) file. 
