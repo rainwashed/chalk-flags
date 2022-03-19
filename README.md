@@ -113,6 +113,12 @@ console.log(formattedString);
 - \* The syntax is still quite limiting and I hope to expand the syntax to enable custom colors/hexadecimal codes.
 - \*\* The performance I have still not measured to other packages, but from all the testing I've done, it seems to run quite fast.
 
+## TODO
+[TODO.md](./TODO.md)
+
+## BUGS
+[BUGS.md](./BUGS.md)
+
 ## Contributors
 ```js
 // No one has contributed yet
