@@ -2,6 +2,7 @@
     "name": "chalk-flags",
     "type": "module",
     "description": "Declarative styling inside the text itself.",
+    "main": "src/index.js",
     "author": {
         "name": "RainWashed",
         "url": "https://rainwashed.org",
@@ -23,7 +24,7 @@
         "style",
         "styles"
     ],
-    "version": "1.0.3",
+    "version": "1.0.4",
     "dependencies": {
         "chalk": "^5.0.0"
     }
