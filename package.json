@@ -1,13 +1,8 @@
 {
     "name": "chalk-flags",
-    "type": "module",
-    "description": "Declarative styling inside the text itself.",
+    "description": "Enable Chalk styles within the text.",
     "main": "src/index.js",
-    "author": {
-        "name": "RainWashed",
-        "url": "https://rainwashed.org",
-        "email": "rainwashed@yandex.com"
-    },
+    "author": "RainWashed",
     "license": "MIT",
     "repository": {
         "type": "git",
@@ -26,6 +21,7 @@
     ],
     "version": "1.0.5",
     "dependencies": {
-        "chalk": "^5.0.0"
+        "chalk": "^5.0.1",
+        "typescript": "^4.8.2"
     }
 }
